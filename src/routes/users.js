@@ -47,7 +47,12 @@ router.patch('/:id', async (req, res) => {
     }
 
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        const user = await User.findById(req.params.id)
+
+        updates.forEach((update) => user[update] = req.body[update])
+        await user.save()
+
+        // const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
     
         if (!user) {
             return res.status(404).send()
@@ -58,7 +63,14 @@ router.patch('/:id', async (req, res) => {
         res.status(400).send(e)
     }
 })
-
+router.post('/login',async (req,res)=>{
+    try {
+        const user = await User.findByCredentials(req.body.email,req.body.password)
+        res.send(user)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
 router.delete('/:id',async (req,res)=>{
     try {
     const user = User.findByIdAndDelete(req.params.id)
@@ -74,4 +86,4 @@ router.delete('/:id',async (req,res)=>{
 })
  
 
-module.exports = router;
+module.exports = router

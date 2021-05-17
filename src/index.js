@@ -1,6 +1,5 @@
 const express = require('express')
 require('./db/mongoose')
-const bcrypt = require('bcryptjs');
 const User = require('./models/user')
 const Task = require('./models/task')
 
@@ -15,19 +14,13 @@ app.use(express.json())
 app.use('/users',usersRouter)
 app.use('/tasks',tasksRouter)
 
+const jwt = require('jsonwebtoken');
 
 app.listen(port, ()=>{
-    console.log('Server is running.');
+    console.log('Server is running.'+port);
 })
 
 const myFunc= async()=> {
-    const password='sadsd'
-    const hashedPassword = await bcrypt.hash(password,8)
-
-    console.log(password)
-    console.log(hashedPassword)
-
-    const isMatch = await bcrypt.compare('sadsd','$2a$08$FD/C/LUxeqSSIBd/GIIQbOgvDk4HgfOJuBYHwwpGgFkQCWzDZAH.e')
-    console.log(isMatch);
+    
 }
 myFunc()
